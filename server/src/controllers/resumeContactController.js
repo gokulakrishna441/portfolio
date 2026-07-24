@@ -77,8 +77,8 @@ export const submitContact = async (req, res, next) => {
     if (!validator.isEmail(email)) {
       return res.status(400).json({ success: false, message: 'Invalid email' });
     }
-    if (message.length < 10) {
-      return res.status(400).json({ success: false, message: 'Message too short' });
+    if (message.length < 5) {
+      return res.status(400).json({ success: false, message: 'Message is too short (min 5 characters)' });
     }
 
     const saved = await Message.create({ name, email, subject, message });

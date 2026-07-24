@@ -21,14 +21,30 @@ export default function Contact({ embedded = false }) {
     e.preventDefault();
     setSending(true);
     setStatus({ type: '', text: '' });
+
+    if (!form.message || form.message.trim().length < 5) {
+      setStatus({
+        type: 'error',
+        text: 'Please write a slightly longer message (at least 5 characters).',
+      });
+      setSending(false);
+      return;
+    }
+
     try {
       await submitContact(form);
       setStatus({ type: 'success', text: 'Message sent. I will get back to you soon.' });
       setForm({ name: '', email: '', subject: '', message: '' });
     } catch (err) {
+      const apiMessage = err.response?.data?.message;
+      const isNetwork = !err.response;
       setStatus({
         type: 'error',
-        text: err.response?.data?.message || 'Could not send message. Please try email directly.',
+        text:
+          apiMessage ||
+          (isNetwork
+            ? 'Cannot reach the server. Make sure the API is running (or VITE_API_URL is set for production).'
+            : 'Could not send message. Please try email directly.'),
       });
     } finally {
       setSending(false);
