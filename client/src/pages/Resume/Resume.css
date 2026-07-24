@@ -1,0 +1,57 @@
+.resume-page {
+  max-width: 760px;
+}
+
+.resume-card {
+  padding: 1.5rem;
+  display: grid;
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.resume-card h2,
+.resume-card h3 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.resume-card p {
+  color: var(--text-muted);
+}
+
+.resume-contact {
+  margin-top: 0.35rem;
+}
+
+.resume-preview {
+  padding: 1.5rem;
+}
+
+.resume-preview h3 {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  margin-bottom: 0.85rem;
+}
+
+.resume-preview ul {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.resume-preview li {
+  color: var(--text-muted);
+  padding-left: 0.9rem;
+  position: relative;
+}
+
+.resume-preview li::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  position: absolute;
+  left: 0;
+  top: 0.55rem;
+}

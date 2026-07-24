@@ -1,0 +1,26 @@
+.page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-content: center;
+  gap: 1.25rem;
+  background: var(--bg);
+  background-image: var(--gradient);
+}
+
+.page-loader__mark {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  text-align: center;
+}
+
+.page-loader__bar {
+  width: 120px;
+  height: 2px;
+  background: var(--accent);
+  transform-origin: left;
+  margin-inline: auto;
+}

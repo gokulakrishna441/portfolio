@@ -1,0 +1,11 @@
+node_modules/
+.DS_Store
+*.log
+.env
+.env.local
+.env.*.local
+client/dist/
+server/node_modules/
+client/node_modules/
+.vercel
+.tmp-pdf/

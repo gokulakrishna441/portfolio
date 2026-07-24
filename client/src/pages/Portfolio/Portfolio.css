@@ -1,0 +1,7 @@
+.portfolio-page {
+  padding-top: 0;
+}
+
+.portfolio-page section[id] {
+  scroll-margin-top: calc(var(--nav-height) + 12px);
+}

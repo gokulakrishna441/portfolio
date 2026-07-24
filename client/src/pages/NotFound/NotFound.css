@@ -1,0 +1,6 @@
+.not-found__inner {
+  max-width: 32rem;
+  min-height: 50vh;
+  display: grid;
+  align-content: center;
+}

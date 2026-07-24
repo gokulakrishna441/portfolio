@@ -1,0 +1,42 @@
+.edu-list {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.edu-card {
+  padding: 1.4rem;
+}
+
+.edu-dates {
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.edu-card h2,
+.edu-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.edu-school {
+  margin-top: 0.35rem;
+  color: var(--text-muted);
+}
+
+.edu-desc {
+  margin-top: 0.75rem;
+  color: var(--text-muted);
+}
+
+.edu-link {
+  display: inline-block;
+  margin-top: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+}

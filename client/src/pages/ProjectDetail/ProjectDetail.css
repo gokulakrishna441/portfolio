@@ -1,0 +1,49 @@
+.project-detail {
+  max-width: 760px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.25rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.back-link:hover {
+  color: var(--accent);
+}
+
+.project-detail__panel {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.project-detail__panel h2 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.project-detail__panel ul {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.project-detail__panel li {
+  color: var(--text-muted);
+  padding-left: 0.9rem;
+  position: relative;
+}
+
+.project-detail__panel li::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  position: absolute;
+  left: 0;
+  top: 0.55rem;
+}
