@@ -8,6 +8,7 @@ import {
   listMessages,
   markMessageRead,
 } from '../controllers/resumeContactController.js';
+import { getEmailConfigStatus } from '../utils/email.js';
 import { protect } from '../middleware/auth.js';
 import { uploadResume } from '../middleware/upload.js';
 
@@ -17,6 +18,10 @@ router.get('/resume', getActiveResume);
 router.get('/resume/download', downloadResume);
 router.get('/resume/admin', protect, listResumes);
 router.post('/resume/upload', protect, uploadResume.single('resume'), uploadResumeFile);
+
+router.get('/email-status', (_req, res) => {
+  res.json({ success: true, data: getEmailConfigStatus() });
+});
 
 router.post('/contact', submitContact);
 router.get('/messages', protect, listMessages);

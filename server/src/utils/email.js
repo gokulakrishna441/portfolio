@@ -1,28 +1,40 @@
 import nodemailer from 'nodemailer';
 
-export const sendContactEmail = async ({ name, email, subject, message }) => {
-  if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-    console.log('[Email skipped — configure SMTP_USER/SMTP_PASS]');
-    return { skipped: true };
-  }
-
-  const transporter = nodemailer.createTransport({
+export const getEmailConfigStatus = () => {
+  const user = (process.env.SMTP_USER || '').trim();
+  const pass = (process.env.SMTP_PASS || '').replace(/\s+/g, '');
+  return {
+    configured: Boolean(user && pass),
+    smtpUser: user ? `${user.slice(0, 3)}***` : '',
     host: process.env.SMTP_HOST || 'smtp.gmail.com',
     port: Number(process.env.SMTP_PORT) || 587,
-    secure: false,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS.replace(/\s+/g, ''),
-    },
-    connectionTimeout: 10000,
-    greetingTimeout: 10000,
-    socketTimeout: 15000,
-    tls: { rejectUnauthorized: false },
+    contactTo: process.env.CONTACT_TO || user || '',
+  };
+};
+
+export const sendContactEmail = async ({ name, email, subject, message }) => {
+  const status = getEmailConfigStatus();
+  if (!status.configured) {
+    return { skipped: true, reason: 'SMTP_USER or SMTP_PASS missing on server' };
+  }
+
+  const user = process.env.SMTP_USER.trim();
+  const pass = process.env.SMTP_PASS.replace(/\s+/g, '');
+
+  // Gmail-friendly transport (more reliable than raw host on some hosts)
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: { user, pass },
+    connectionTimeout: 12000,
+    greetingTimeout: 12000,
+    socketTimeout: 20000,
   });
 
+  await transporter.verify();
+
   await transporter.sendMail({
-    from: `"Portfolio Contact" <${process.env.SMTP_USER}>`,
-    to: process.env.CONTACT_TO || process.env.SMTP_USER,
+    from: `"Portfolio Contact" <${user}>`,
+    to: process.env.CONTACT_TO || user,
     replyTo: email,
     subject: `[Portfolio] ${subject}`,
     text: `From: ${name} <${email}>\n\n${message}`,
