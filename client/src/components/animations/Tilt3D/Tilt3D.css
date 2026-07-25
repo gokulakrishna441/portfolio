@@ -1,0 +1,21 @@
+.tilt3d {
+  position: relative;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  border-radius: var(--radius);
+  height: 100%;
+}
+
+.tilt3d__inner {
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.tilt3d__glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+  opacity: 0.85;
+}

@@ -1,4 +1,5 @@
-import { motion, useReducedMotion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
+import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from 'framer-motion';
 import profileImg from '../../../assets/profile.png';
 import { scrollToSection } from '../../../utils/scroll';
 import './HeroSection.css';
@@ -19,14 +20,37 @@ const fadeUp = {
 
 export default function HeroSection() {
   const reduce = useReducedMotion();
+  const sectionRef = useRef(null);
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const sx = useSpring(mx, { stiffness: 80, damping: 18 });
+  const sy = useSpring(my, { stiffness: 80, damping: 18 });
+  const contentX = useTransform(sx, [-0.5, 0.5], [-18, 18]);
+  const contentY = useTransform(sy, [-0.5, 0.5], [-10, 10]);
+  const photoX = useTransform(sx, [-0.5, 0.5], [16, -16]);
+  const photoY = useTransform(sy, [-0.5, 0.5], [10, -10]);
+
+  useEffect(() => {
+    if (reduce) return undefined;
+    const onMove = (e) => {
+      const el = sectionRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      mx.set((e.clientX - rect.left) / rect.width - 0.5);
+      my.set((e.clientY - rect.top) / rect.height - 0.5);
+    };
+    window.addEventListener('pointermove', onMove, { passive: true });
+    return () => window.removeEventListener('pointermove', onMove);
+  }, [reduce, mx, my]);
 
   return (
-    <section id="home" className="hero">
+    <section id="home" className="hero" ref={sectionRef}>
       <div className="hero__media">
         <motion.img
           src={profileImg}
           alt="Gokula Krishna A professional portrait"
           className="hero__photo"
+          style={reduce ? undefined : { x: photoX, y: photoY }}
           initial={reduce ? false : { opacity: 0, scale: 1.08 }}
           animate={reduce ? undefined : { opacity: 1, scale: 1 }}
           transition={{ duration: 1.35, ease: EASE }}
@@ -36,12 +60,18 @@ export default function HeroSection() {
           <>
             <span className="hero__glow hero__glow--a" aria-hidden="true" />
             <span className="hero__glow hero__glow--b" aria-hidden="true" />
+            <div className="hero__mesh" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </div>
           </>
         )}
       </div>
 
       <motion.div
         className="container hero__content"
+        style={reduce ? undefined : { x: contentX, y: contentY }}
         variants={reduce ? undefined : container}
         initial={reduce ? false : 'hidden'}
         animate={reduce ? undefined : 'show'}

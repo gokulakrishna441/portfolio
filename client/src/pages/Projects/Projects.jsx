@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '../../components/common/SEO';
-import { AnimatePresence, motion } from 'framer-motion';
 import Reveal, { Stagger, StaggerItem } from '../../components/animations/Reveal';
+import Tilt3D from '../../components/animations/Tilt3D';
 import Spinner from '../../components/ui/Spinner';
 import { getProjects } from '../../services/api';
 import './Projects.css';
@@ -129,35 +129,30 @@ export default function Projects({ embedded = false }) {
         <Spinner />
       ) : (
         <Stagger className="projects-grid" stagger={0.07}>
-          <AnimatePresence mode="popLayout">
-            {projects.map((project) => (
+          {projects.map((project) => (
               <StaggerItem key={project._id || project.slug} direction="scale">
-                <motion.article
-                  className="glass project-card"
-                  layout
-                  whileHover={{ y: -6 }}
-                  transition={{ type: 'spring', stiffness: 320, damping: 24 }}
-                >
-                  <div className="project-card__top">
-                    <span className="project-card__cat">{project.category}</span>
-                    {project.featured && <span className="project-card__feat">Featured</span>}
-                  </div>
-                  <h3>{project.title}</h3>
-                  <p>{project.shortDescription}</p>
-                  <div className="chip-row">
-                    {(project.techStack || []).slice(0, 5).map((tech) => (
-                      <span key={tech} className="chip">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                  <Link to={`/projects/${project.slug || project._id}`} className="project-card__link">
-                    View details →
-                  </Link>
-                </motion.article>
+                <Tilt3D max={10} scale={1.015}>
+                  <article className="glass project-card">
+                    <div className="project-card__top">
+                      <span className="project-card__cat">{project.category}</span>
+                      {project.featured && <span className="project-card__feat">Featured</span>}
+                    </div>
+                    <h3>{project.title}</h3>
+                    <p>{project.shortDescription}</p>
+                    <div className="chip-row">
+                      {(project.techStack || []).slice(0, 5).map((tech) => (
+                        <span key={tech} className="chip">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                    <Link to={`/projects/${project.slug || project._id}`} className="project-card__link">
+                      View details →
+                    </Link>
+                  </article>
+                </Tilt3D>
               </StaggerItem>
             ))}
-          </AnimatePresence>
         </Stagger>
       )}
 

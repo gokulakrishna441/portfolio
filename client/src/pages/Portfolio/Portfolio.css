@@ -1,7 +1,51 @@
 .portfolio-page {
   padding-top: 0;
+  position: relative;
+  isolation: isolate;
+}
+
+.portfolio-page > *:not(.depth-field) {
+  position: relative;
+  z-index: 1;
 }
 
 .portfolio-page section[id] {
   scroll-margin-top: calc(var(--nav-height) + 12px);
+}
+
+.home-intro__layout {
+  align-items: center;
+}
+
+.home-intro__stats {
+  margin-top: 1.75rem;
+  display: grid;
+  gap: 0.85rem;
+}
+
+@media (min-width: 640px) {
+  .home-intro__stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.home-stat-card {
+  padding: 1rem 1.05rem;
+  display: grid;
+  gap: 0.35rem;
+  min-height: 100%;
+}
+
+.home-stat-card strong {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.home-stat-card span {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  line-height: 1.35;
 }

@@ -1,11 +1,13 @@
 import Reveal from '../../animations/Reveal';
+import Tilt3D from '../../animations/Tilt3D';
+import StackOrbit from '../StackOrbit';
 import { scrollToSection } from '../../../utils/scroll';
 
 export default function IntroSection() {
   return (
     <section className="section home-intro" aria-label="Introduction">
-      <div className="container grid-2">
-        <Reveal>
+      <div className="container grid-2 home-intro__layout">
+        <Reveal direction="left">
           <p className="eyebrow">Introduction</p>
           <h2 className="section-title">Full-stack craft with recruiter-ready clarity.</h2>
           <p className="section-lead">
@@ -21,22 +23,31 @@ export default function IntroSection() {
               Download resume
             </button>
           </div>
-        </Reveal>
-        <Reveal delay={0.12}>
-          <div className="glass home-intro__card">
-            <div className="home-stat">
-              <strong>3+</strong>
-              <span>Years building web products</span>
-            </div>
-            <div className="home-stat">
-              <strong>4</strong>
-              <span>Featured product deliveries</span>
-            </div>
-            <div className="home-stat">
-              <strong>MERN</strong>
-              <span>React · Node · Express · MongoDB</span>
-            </div>
+
+          <div className="home-intro__stats">
+            <Tilt3D max={8} scale={1.01}>
+              <div className="glass home-stat-card">
+                <strong>3+</strong>
+                <span>Years shipping products</span>
+              </div>
+            </Tilt3D>
+            <Tilt3D max={8} scale={1.01}>
+              <div className="glass home-stat-card">
+                <strong>4</strong>
+                <span>Featured deliveries</span>
+              </div>
+            </Tilt3D>
+            <Tilt3D max={8} scale={1.01}>
+              <div className="glass home-stat-card">
+                <strong>MERN</strong>
+                <span>End-to-end stack</span>
+              </div>
+            </Tilt3D>
           </div>
+        </Reveal>
+
+        <Reveal delay={0.12} direction="right">
+          <StackOrbit />
         </Reveal>
       </div>
     </section>

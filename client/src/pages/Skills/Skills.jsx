@@ -63,10 +63,12 @@ export default function Skills({ embedded = false }) {
       {loading ? (
         <Spinner />
       ) : (
-        <Reveal delay={0.08}>
-          <Suspense fallback={<Spinner label="Loading 3D charts..." />}>
-            <SkillsCharts skills={skills} />
-          </Suspense>
+        <Reveal delay={0.08} direction="scale">
+          <div className="skills-stage">
+            <Suspense fallback={<Spinner label="Loading 3D charts..." />}>
+              <SkillsCharts skills={skills} />
+            </Suspense>
+          </div>
         </Reveal>
       )}
     </div>

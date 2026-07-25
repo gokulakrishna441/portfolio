@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import SEO from '../../components/common/SEO';
+import DepthField from '../../components/animations/DepthField';
 import HeroSection from '../../components/sections/HeroSection';
 import IntroSection from '../../components/sections/IntroSection';
 import About from '../About';
@@ -29,6 +30,7 @@ export default function Portfolio() {
         title="Gokula Krishna A | MERN Stack Developer"
         description="MERN Stack Developer in Coimbatore building full-stack apps, dashboards, admin portals, and ERP workflows."
       />
+      <DepthField />
       <HeroSection />
       <IntroSection />
       <About embedded />

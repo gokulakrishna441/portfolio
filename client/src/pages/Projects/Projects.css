@@ -48,6 +48,7 @@
 .projects-grid {
   display: grid;
   gap: 1.2rem;
+  perspective: 1200px;
 }
 
 .project-card {
