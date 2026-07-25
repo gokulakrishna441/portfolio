@@ -228,7 +228,7 @@ const seed = async () => {
   await Resume.create({
     filename: 'Gokula_Krishna_Resume.pdf',
     originalName: 'Gokula_Krishna_Resume.pdf',
-    path: path.join('uploads/resumes', 'Gokula_Krishna_Resume.pdf'),
+    path: 'uploads/resumes/Gokula_Krishna_Resume.pdf',
     mimeType: 'application/pdf',
     isActive: true,
   });

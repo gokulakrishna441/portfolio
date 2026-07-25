@@ -19,20 +19,39 @@ export const getActiveResume = async (_req, res, next) => {
   }
 };
 
+const resolveResumePath = (storedPath) => {
+  const normalized = String(storedPath || '').replace(/\\/g, '/');
+  if (path.isAbsolute(normalized)) return normalized;
+  return path.join(__dirname, '../../', normalized);
+};
+
+const DEFAULT_RESUME_RELATIVE = 'uploads/resumes/Gokula_Krishna_Resume.pdf';
+const DEFAULT_RESUME_NAME = 'Gokula_Krishna_Resume.pdf';
+
 export const downloadResume = async (_req, res, next) => {
   try {
     const resume = await Resume.findOne({ isActive: true }).sort({ createdAt: -1 });
-    if (!resume) return res.status(404).json({ success: false, message: 'No resume uploaded' });
+    const candidates = [];
 
-    const filePath = path.isAbsolute(resume.path)
-      ? resume.path
-      : path.join(__dirname, '../../', resume.path);
+    if (resume?.path) {
+      candidates.push({
+        filePath: resolveResumePath(resume.path),
+        downloadName: resume.originalName || DEFAULT_RESUME_NAME,
+      });
+    }
 
-    if (!fs.existsSync(filePath)) {
+    // Fallback: bundled resume committed in the repo (survives Render redeploys)
+    candidates.push({
+      filePath: resolveResumePath(DEFAULT_RESUME_RELATIVE),
+      downloadName: DEFAULT_RESUME_NAME,
+    });
+
+    const match = candidates.find((item) => fs.existsSync(item.filePath));
+    if (!match) {
       return res.status(404).json({ success: false, message: 'Resume file missing' });
     }
 
-    res.download(filePath, resume.originalName || 'Gokula_Krishna_Resume.pdf');
+    res.download(match.filePath, match.downloadName);
   } catch (err) {
     next(err);
   }
@@ -47,7 +66,8 @@ export const uploadResumeFile = async (req, res, next) => {
     const resume = await Resume.create({
       filename: req.file.filename,
       originalName: req.file.originalname,
-      path: path.join('uploads/resumes', req.file.filename),
+      // Always store posix-style paths so Linux (Render) can resolve them
+      path: `uploads/resumes/${req.file.filename}`,
       mimeType: req.file.mimetype,
       isActive: true,
     });
