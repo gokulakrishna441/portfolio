@@ -3,7 +3,6 @@ import nodemailer from 'nodemailer';
 export const sendContactEmail = async ({ name, email, subject, message }) => {
   if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
     console.log('[Email skipped — configure SMTP_USER/SMTP_PASS]');
-    console.log({ name, email, subject, message });
     return { skipped: true };
   }
 
@@ -13,8 +12,12 @@ export const sendContactEmail = async ({ name, email, subject, message }) => {
     secure: false,
     auth: {
       user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
+      pass: process.env.SMTP_PASS.replace(/\s+/g, ''),
     },
+    connectionTimeout: 10000,
+    greetingTimeout: 10000,
+    socketTimeout: 15000,
+    tls: { rejectUnauthorized: false },
   });
 
   await transporter.sendMail({

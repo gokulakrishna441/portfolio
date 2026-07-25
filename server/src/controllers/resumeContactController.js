@@ -82,12 +82,22 @@ export const submitContact = async (req, res, next) => {
     }
 
     const saved = await Message.create({ name, email, subject, message });
-    await sendContactEmail({ name, email, subject, message });
+
+    let emailSent = false;
+    try {
+      const result = await sendContactEmail({ name, email, subject, message });
+      emailSent = !result?.skipped;
+    } catch (emailErr) {
+      // Never fail the contact form if SMTP times out / misconfigured.
+      console.error('[Contact email failed]', emailErr.message);
+    }
 
     res.status(201).json({
       success: true,
-      message: 'Message sent successfully',
-      data: { id: saved._id },
+      message: emailSent
+        ? 'Message sent successfully'
+        : 'Message saved successfully. Email notification may be delayed.',
+      data: { id: saved._id, emailSent },
     });
   } catch (err) {
     next(err);
