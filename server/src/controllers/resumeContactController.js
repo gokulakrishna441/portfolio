@@ -85,15 +85,19 @@ export const submitContact = async (req, res, next) => {
 
     let emailSent = false;
     let emailError = null;
+    let thankYouSent = false;
     try {
       const result = await sendContactEmail({ name, email, subject, message });
       if (result?.skipped) {
         emailError = result.reason || 'Email skipped';
       } else {
         emailSent = true;
+        thankYouSent = Boolean(result?.thankYouSent);
+        if (result?.thankYouError) {
+          emailError = `Admin email sent. Thank-you email failed: ${result.thankYouError}`;
+        }
       }
     } catch (emailErr) {
-      // Never fail the contact form if SMTP times out / misconfigured.
       emailError = emailErr.message || 'Email send failed';
       console.error('[Contact email failed]', emailError);
     }
@@ -101,9 +105,11 @@ export const submitContact = async (req, res, next) => {
     res.status(201).json({
       success: true,
       message: emailSent
-        ? 'Message sent successfully'
+        ? thankYouSent
+          ? 'Message sent successfully. A thank-you email was also sent.'
+          : 'Message sent successfully'
         : 'Message saved successfully. Email notification may be delayed.',
-      data: { id: saved._id, emailSent, emailError },
+      data: { id: saved._id, emailSent, thankYouSent, emailError },
     });
   } catch (err) {
     next(err);
