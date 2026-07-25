@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
 import './DepthField.css';
 
@@ -13,15 +13,30 @@ const SHAPES = [
   { type: 'node', x: 8, y: 48, z: 70, size: 1, speed: 0.33 },
 ];
 
+function useDesktopMotion() {
+  const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 901px) and (pointer: fine)');
+    const sync = () => setEnabled(mq.matches);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
+
+  return enabled;
+}
+
 export default function DepthField() {
   const reduce = useReducedMotion();
+  const desktop = useDesktopMotion();
   const rootRef = useRef(null);
   const pointer = useRef({ x: 0, y: 0 });
   const scrollY = useRef(0);
   const raf = useRef(0);
 
   useEffect(() => {
-    if (reduce) return undefined;
+    if (reduce || !desktop) return undefined;
     const root = rootRef.current;
     if (!root) return undefined;
 
@@ -66,9 +81,9 @@ export default function DepthField() {
       window.removeEventListener('pointermove', onPointer);
       window.removeEventListener('scroll', onScroll);
     };
-  }, [reduce]);
+  }, [reduce, desktop]);
 
-  if (reduce) return null;
+  if (reduce || !desktop) return null;
 
   return (
     <div className="depth-field" aria-hidden="true" ref={rootRef}>

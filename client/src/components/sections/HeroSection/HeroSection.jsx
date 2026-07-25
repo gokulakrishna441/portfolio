@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from 'framer-motion';
 import profileImg from '../../../assets/profile.png';
 import { scrollToSection } from '../../../utils/scroll';
@@ -20,6 +20,7 @@ const fadeUp = {
 
 export default function HeroSection() {
   const reduce = useReducedMotion();
+  const [parallax, setParallax] = useState(false);
   const sectionRef = useRef(null);
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
@@ -31,7 +32,19 @@ export default function HeroSection() {
   const photoY = useTransform(sy, [-0.5, 0.5], [10, -10]);
 
   useEffect(() => {
-    if (reduce) return undefined;
+    const mq = window.matchMedia('(min-width: 901px) and (pointer: fine)');
+    const sync = () => setParallax(mq.matches && !reduce);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, [reduce]);
+
+  useEffect(() => {
+    if (!parallax) {
+      mx.set(0);
+      my.set(0);
+      return undefined;
+    }
     const onMove = (e) => {
       const el = sectionRef.current;
       if (!el) return;
@@ -41,7 +54,7 @@ export default function HeroSection() {
     };
     window.addEventListener('pointermove', onMove, { passive: true });
     return () => window.removeEventListener('pointermove', onMove);
-  }, [reduce, mx, my]);
+  }, [parallax, mx, my]);
 
   return (
     <section id="home" className="hero" ref={sectionRef}>
@@ -50,7 +63,7 @@ export default function HeroSection() {
           src={profileImg}
           alt="Gokula Krishna A professional portrait"
           className="hero__photo"
-          style={reduce ? undefined : { x: photoX, y: photoY }}
+          style={parallax ? { x: photoX, y: photoY } : undefined}
           initial={reduce ? false : { opacity: 0, scale: 1.08 }}
           animate={reduce ? undefined : { opacity: 1, scale: 1 }}
           transition={{ duration: 1.35, ease: EASE }}
@@ -71,7 +84,7 @@ export default function HeroSection() {
 
       <motion.div
         className="container hero__content"
-        style={reduce ? undefined : { x: contentX, y: contentY }}
+        style={parallax ? { x: contentX, y: contentY } : undefined}
         variants={reduce ? undefined : container}
         initial={reduce ? false : 'hidden'}
         animate={reduce ? undefined : 'show'}

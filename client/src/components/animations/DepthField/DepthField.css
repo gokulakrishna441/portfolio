@@ -116,16 +116,9 @@
   }
 }
 
-@media (max-width: 760px) {
-  .depth-shape--cube,
-  .depth-shape--ring,
-  .depth-shape--pyramid {
-    opacity: 0.28;
-    transform: scale(0.7);
-  }
-
-  .depth-field__flow {
-    opacity: 0.22;
+@media (max-width: 900px) {
+  .depth-field {
+    display: none !important;
   }
 }
 

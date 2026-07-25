@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   motion,
   useMotionTemplate,
@@ -9,6 +9,20 @@ import {
 } from 'framer-motion';
 import './Tilt3D.css';
 
+function useFinePointer() {
+  const [fine, setFine] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 901px) and (pointer: fine)');
+    const sync = () => setFine(mq.matches);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
+
+  return fine;
+}
+
 export default function Tilt3D({
   children,
   className = '',
@@ -17,6 +31,8 @@ export default function Tilt3D({
   scale = 1.02,
 }) {
   const reduce = useReducedMotion();
+  const fine = useFinePointer();
+  const enabled = !reduce && fine;
   const ref = useRef(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -29,7 +45,7 @@ export default function Tilt3D({
   const glareY = useTransform(springY, [-0.5, 0.5], [10, 90]);
   const glareBg = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, rgba(255,255,255,0.28), transparent 55%)`;
 
-  if (reduce) {
+  if (!enabled) {
     return <div className={className}>{children}</div>;
   }
 

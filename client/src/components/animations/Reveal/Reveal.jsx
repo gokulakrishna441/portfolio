@@ -5,10 +5,21 @@ const EASE = [0.22, 1, 0.36, 1];
 const offsets = {
   up: { x: 0, y: 28 },
   down: { x: 0, y: -20 },
-  left: { x: 36, y: 0 },
-  right: { x: -36, y: 0 },
+  left: { x: 24, y: 0 },
+  right: { x: -24, y: 0 },
   scale: { x: 0, y: 16, scale: 0.96 },
 };
+
+const mobileOffsets = {
+  up: { x: 0, y: 20 },
+  down: { x: 0, y: -14 },
+  left: { x: 0, y: 20 },
+  right: { x: 0, y: 20 },
+  scale: { x: 0, y: 14, scale: 0.98 },
+};
+
+const isMobileViewport = () =>
+  typeof window !== 'undefined' && window.matchMedia('(max-width: 900px)').matches;
 
 export default function Reveal({
   children,
@@ -27,7 +38,8 @@ export default function Reveal({
     return <Tag className={className}>{children}</Tag>;
   }
 
-  const base = offsets[direction] || offsets.up;
+  const map = isMobileViewport() ? mobileOffsets : offsets;
+  const base = map[direction] || map.up;
   const initialY = typeof y === 'number' ? y : base.y;
 
   return (
@@ -73,7 +85,8 @@ export function Stagger({ children, className = '', stagger = 0.08, delay = 0 })
 
 export function StaggerItem({ children, className = '', direction = 'up' }) {
   const reduce = useReducedMotion();
-  const base = offsets[direction] || offsets.up;
+  const map = isMobileViewport() ? mobileOffsets : offsets;
+  const base = map[direction] || map.up;
 
   if (reduce) return <div className={className}>{children}</div>;
 

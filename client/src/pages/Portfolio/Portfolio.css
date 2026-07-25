@@ -2,11 +2,14 @@
   padding-top: 0;
   position: relative;
   isolation: isolate;
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 .portfolio-page > *:not(.depth-field) {
   position: relative;
   z-index: 1;
+  max-width: 100%;
 }
 
 .portfolio-page section[id] {

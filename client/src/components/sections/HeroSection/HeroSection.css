@@ -191,3 +191,24 @@
     animation: none !important;
   }
 }
+
+@media (max-width: 900px) {
+  .hero {
+    overflow: hidden;
+  }
+
+  .hero__glow,
+  .hero__mesh {
+    display: none;
+  }
+
+  .hero__photo {
+    animation: none;
+    transform: none !important;
+  }
+
+  .hero__content {
+    transform: none !important;
+    max-width: 100%;
+  }
+}

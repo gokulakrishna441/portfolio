@@ -5,6 +5,8 @@
   margin-inline: auto;
   perspective: 900px;
   transform-style: preserve-3d;
+  overflow: hidden;
+  contain: layout paint;
 }
 
 .stack-orbit__core {
@@ -146,11 +148,35 @@
   }
 }
 
-@media (max-width: 760px) {
+@media (max-width: 900px) {
+  .stack-orbit {
+    width: min(100%, 320px);
+    overflow: hidden;
+  }
+
+  .stack-orbit__ring {
+    animation: none;
+  }
+
+  .stack-orbit__ring--outer {
+    animation: orbitSpinSoft 36s linear infinite;
+  }
+
   .stack-orbit__chip {
-    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-118px) rotate(calc(var(--angle) * -1));
-    font-size: 0.64rem;
-    padding: 0.28rem 0.55rem;
+    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-105px) rotate(calc(var(--angle) * -1));
+    font-size: 0.6rem;
+    padding: 0.24rem 0.5rem;
+    animation: none;
+  }
+
+  .stack-orbit__pulse {
+    animation: none;
+  }
+}
+
+@keyframes orbitSpinSoft {
+  to {
+    transform: rotateZ(360deg);
   }
 }
 

@@ -51,6 +51,8 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
@@ -63,6 +65,15 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  max-width: 100%;
+  position: relative;
+}
+
+@media (max-width: 900px) {
+  body {
+    background-attachment: scroll;
+  }
 }
 
 img {

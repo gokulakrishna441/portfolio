@@ -15,6 +15,12 @@
   border-color: color-mix(in srgb, var(--accent) 30%, var(--glass-border));
 }
 
+@media (max-width: 900px) {
+  .timeline__item:hover {
+    transform: none;
+  }
+}
+
 .timeline__dates {
   color: var(--accent);
   font-size: 0.82rem;
