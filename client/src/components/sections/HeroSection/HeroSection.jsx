@@ -1,9 +1,25 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import profileImg from '../../../assets/profile.png';
 import { scrollToSection } from '../../../utils/scroll';
 import './HeroSection.css';
 
+const EASE = [0.22, 1, 0.36, 1];
+
+const container = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.12, delayChildren: 0.18 },
+  },
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 22 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.75, ease: EASE } },
+};
+
 export default function HeroSection() {
+  const reduce = useReducedMotion();
+
   return (
     <section id="home" className="hero">
       <div className="hero__media">
@@ -11,65 +27,66 @@ export default function HeroSection() {
           src={profileImg}
           alt="Gokula Krishna A professional portrait"
           className="hero__photo"
-          initial={{ opacity: 0, scale: 1.04 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+          initial={reduce ? false : { opacity: 0, scale: 1.08 }}
+          animate={reduce ? undefined : { opacity: 1, scale: 1 }}
+          transition={{ duration: 1.35, ease: EASE }}
         />
         <div className="hero__veil" />
+        {!reduce && (
+          <>
+            <span className="hero__glow hero__glow--a" aria-hidden="true" />
+            <span className="hero__glow hero__glow--b" aria-hidden="true" />
+          </>
+        )}
       </div>
 
-      <div className="container hero__content">
-        <motion.p
-          className="hero__brand"
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.15 }}
-        >
+      <motion.div
+        className="container hero__content"
+        variants={reduce ? undefined : container}
+        initial={reduce ? false : 'hidden'}
+        animate={reduce ? undefined : 'show'}
+      >
+        <motion.p className="hero__brand" variants={reduce ? undefined : fadeUp}>
           Gokula Krishna A
         </motion.p>
-        <motion.h1
-          className="hero__title"
-          initial={{ opacity: 0, y: 22 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.75, delay: 0.28 }}
-        >
-          MERN Stack Developer
+        <motion.h1 className="hero__title" variants={reduce ? undefined : fadeUp}>
+          <span className="hero__title-text">MERN Stack Developer</span>
         </motion.h1>
-        <motion.p
-          className="hero__lead"
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.4 }}
-        >
+        <motion.p className="hero__lead" variants={reduce ? undefined : fadeUp}>
           Building elegant full-stack products with React, Node.js, and MongoDB — from dashboards to
           ERP workflows.
         </motion.p>
-        <motion.div
-          className="btn-group"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, delay: 0.52 }}
-        >
-          <button type="button" className="btn btn-primary" onClick={() => scrollToSection('projects')}>
+        <motion.div className="btn-group" variants={reduce ? undefined : fadeUp}>
+          <motion.button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => scrollToSection('projects')}
+            whileHover={reduce ? undefined : { y: -3, scale: 1.02 }}
+            whileTap={reduce ? undefined : { scale: 0.98 }}
+          >
             View projects
-          </button>
-          <button type="button" className="btn btn-ghost" onClick={() => scrollToSection('contact')}>
+          </motion.button>
+          <motion.button
+            type="button"
+            className="btn btn-ghost"
+            onClick={() => scrollToSection('contact')}
+            whileHover={reduce ? undefined : { y: -3, scale: 1.02 }}
+            whileTap={reduce ? undefined : { scale: 0.98 }}
+          >
             Get in touch
-          </button>
+          </motion.button>
         </motion.div>
         <motion.button
           type="button"
           className="hero__scroll"
           onClick={() => scrollToSection('about')}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.6 }}
+          variants={reduce ? undefined : fadeUp}
           aria-label="Scroll to about section"
         >
           <span>Scroll</span>
           <span className="hero__scroll-line" />
         </motion.button>
-      </div>
+      </motion.div>
     </section>
   );
 }

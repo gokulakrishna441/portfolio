@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import SEO from '../../components/common/SEO';
-import Reveal from '../../components/animations/Reveal';
+import Reveal, { Stagger, StaggerItem } from '../../components/animations/Reveal';
 import Spinner from '../../components/ui/Spinner';
 import { getExperience } from '../../services/api';
 import './Experience.css';
@@ -83,9 +83,9 @@ export default function Experience({ embedded = false }) {
       {loading ? (
         <Spinner />
       ) : (
-        <div className="timeline">
-          {items.map((job, idx) => (
-            <Reveal key={job._id || job.company} delay={idx * 0.06}>
+        <Stagger className="timeline" stagger={0.1} delay={0.05}>
+          {items.map((job) => (
+            <StaggerItem key={job._id || job.company} direction="left">
               <article className="timeline__item glass">
                 <div className="timeline__meta">
                   <p className="timeline__dates">
@@ -112,9 +112,9 @@ export default function Experience({ embedded = false }) {
                   </div>
                 )}
               </article>
-            </Reveal>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       )}
     </div>
   );

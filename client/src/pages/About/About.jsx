@@ -35,19 +35,19 @@ export default function About({ embedded = false }) {
     <Spinner />
   ) : (
     <div className="container about-grid">
-      <Reveal>
+      <Reveal direction="left">
         <div className="about-photo glass">
           <img src={profileImg} alt={data.name} />
         </div>
       </Reveal>
       <div>
-        <Reveal>
+        <Reveal direction="right">
           <p className="eyebrow">About</p>
           <h2 className="section-title">{data.name}</h2>
           <p className="about-role">{data.title}</p>
           <p className="section-lead">{data.about}</p>
         </Reveal>
-        <Reveal delay={0.1}>
+        <Reveal delay={0.12} direction="up">
           <ul className="about-meta glass">
             <li>
               <span>Location</span>
@@ -71,7 +71,7 @@ export default function About({ embedded = false }) {
             </li>
           </ul>
         </Reveal>
-        <Reveal delay={0.16}>
+        <Reveal delay={0.2}>
           <div className="btn-group" style={{ marginTop: '1.5rem' }}>
             <button type="button" className="btn btn-primary" onClick={() => scrollToSection('experience')}>
               Experience

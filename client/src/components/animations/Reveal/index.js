@@ -1,1 +1,1 @@
-export { default } from './Reveal';
+export { default, Stagger, StaggerItem } from './Reveal';

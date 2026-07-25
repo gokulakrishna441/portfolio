@@ -39,6 +39,7 @@
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 0.95rem;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .navbar__name {
@@ -58,13 +59,22 @@
   font-size: 0.86rem;
   color: var(--text-muted);
   font-weight: 500;
-  transition: color 0.2s ease, background 0.2s ease;
+  position: relative;
+  transition: color 0.25s ease, background 0.25s ease, transform 0.25s ease;
 }
 
-.navbar__link:hover,
+.navbar__link:hover {
+  color: var(--text);
+  transform: translateY(-1px);
+}
+
 .navbar__link.is-active {
   color: var(--text);
   background: var(--accent-soft);
+}
+
+.navbar__brand:hover .navbar__mark {
+  transform: rotate(-6deg) scale(1.05);
 }
 
 .navbar__actions {
